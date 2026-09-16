@@ -44,11 +44,3 @@ To run this application locally on your machine, follow these steps:
    ```
    *The application will automatically open in your default browser at `http://localhost:8501`.*
 
----
-
-## 👨‍💼 About the Author
-
-**Sergey Gerasimov** — Senior Product Professional & Systems Architect.
-* Over 15 years of technical lifecycle and account management experience at **Microsoft** and **Deutsche Bank**.
-* Master of Economics (Capital Markets) & foundational background in Cybernetics.
-* Core advocate for modern product engineering: combining commercial awareness with hands-on technical prototyping and asynchronous delivery.
