@@ -19,7 +19,7 @@ from app import (
 GERMAN_SAMPLE = (
     "INVOICE\n"
     "From: Acme Beratungs GmbH, Berlin\n"
-    "Bill to: Remote Customer AG\n"
+    "Bill to: Northwind Customer AG\n"
     "Amount: EUR 4,200.00 for August consulting\n"
 )
 

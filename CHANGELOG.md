@@ -21,7 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Invoice Audit Calculator** for the US, UK, and Germany with worker-type-aware employer social contributions.
 - **AI Invoice Compliance Checker** with a jurisdiction-aware rule engine and a deterministic mock-LLM narrative.
 - **Asynchronous Audit Log** with faceted filtering, KPI tiles, and CSV export.
-- Remote.com-inspired Streamlit dark theme and single-file application architecture.
+- Custom Streamlit dark theme and single-file application architecture.
 
 [Unreleased]: https://github.com/SergeyGer/remote-billing-audit/compare/v0.1.0...HEAD
 [0.1.0]: https://github.com/SergeyGer/remote-billing-audit/releases/tag/v0.1.0

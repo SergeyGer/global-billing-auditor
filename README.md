@@ -89,7 +89,7 @@ unit-tested without a running Streamlit server.
 ┌────────────────────────────────────────────────────────────┐
 │ LAYER 1 · ENTRY POINT                                      │
 │ main()                                                     │
-│ st.set_page_config() · REMOTE_CSS · init_session_state()   │
+│ st.set_page_config() · APP_CSS · init_session_state()      │
 └────────────────────────────────────────────────────────────┘
                              │
                              ▼
@@ -118,7 +118,7 @@ unit-tested without a running Streamlit server.
 ┌────────────────────────────────────────────────────────────┐
 │ LAYER 5 · CONFIGURATION                                    │
 │ COUNTRY_RULES · USD_TO_EUR                                 │
-│ APP_TITLE · APP_TAGLINE · REMOTE_CSS                       │
+│ APP_TITLE · APP_TAGLINE · APP_CSS                          │
 └────────────────────────────────────────────────────────────┘
 ```
 
@@ -126,7 +126,7 @@ unit-tested without a running Streamlit server.
 
 | Block | `app.py` section | Key names | Responsibility |
 |---|---|---|---|
-| **Configuration** | §1 CONFIG & THEME | `APP_TITLE`, `USD_TO_EUR`, `COUNTRY_RULES`, `REMOTE_CSS` | Single source of truth for demo rates, FX, and theming. |
+| **Configuration** | §1 CONFIG & THEME | `APP_TITLE`, `USD_TO_EUR`, `COUNTRY_RULES`, `APP_CSS` | Single source of truth for demo rates, FX, and theming. |
 | **Domain logic** | §2 Invoice Audit Calculator | `AuditBreakdown`, `to_usd`, `from_usd`, `calculate_audit` | Pure-function employer-cost model — no Streamlit imports needed to test it. |
 | **Domain logic** | §3 AI Compliance Checker | `ComplianceFinding`, `check_invoice_compliance`, `mock_llm_narrative`, `_has_*` rule helpers | Jurisdiction inference, regex rule checks, severity ranking, deterministic narrative. |
 | **State** | §4 Asynchronous Audit Log | `seed_audit_log`, `append_audit_row`, `init_session_state` | In-session DataFrame store that mimics an async audit queue. |

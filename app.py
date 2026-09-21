@@ -1,7 +1,7 @@
 """
 Global Billing & Invoice Compliance Auditor
 -------------------------------------------
-Mini-MVP Streamlit app for Remote.com-style fintech vertical demos.
+Mini-MVP Streamlit app for global payroll & fintech vertical demos.
 
 Run:
     streamlit run app.py
@@ -30,7 +30,7 @@ import streamlit as st
 # =============================================================================
 
 APP_TITLE = "Global Billing & Invoice Compliance Auditor"
-APP_TAGLINE = "Remote.com fintech vertical · Mini-MVP"
+APP_TAGLINE = "Global payroll fintech vertical · Mini-MVP"
 
 Country = Literal["Germany", "US", "UK"]
 EmployeeType = Literal["Contractor", "Full-time"]
@@ -71,29 +71,29 @@ COUNTRY_RULES: dict[str, dict] = {
     },
 }
 
-REMOTE_CSS = """
+APP_CSS = """
 <style>
-    /* Remote.com–inspired deep blue theme */
+    /* Deep navy theme for the product demo */
     @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap');
 
     :root {
-        --remote-navy: #0B1F3A;
-        --remote-deep: #122B4A;
-        --remote-mid: #1A3A5C;
-        --remote-accent: #3D8BFF;
-        --remote-accent-soft: #5BA3FF;
-        --remote-teal: #2DD4BF;
-        --remote-text: #E8EEF7;
-        --remote-muted: #9AAFC7;
-        --remote-danger: #FF6B7A;
-        --remote-warn: #F5B942;
-        --remote-ok: #3DDC97;
-        --remote-border: rgba(61, 139, 255, 0.22);
+        --brand-navy: #0B1F3A;
+        --brand-deep: #122B4A;
+        --brand-mid: #1A3A5C;
+        --brand-accent: #3D8BFF;
+        --brand-accent-soft: #5BA3FF;
+        --brand-teal: #2DD4BF;
+        --brand-text: #E8EEF7;
+        --brand-muted: #9AAFC7;
+        --brand-danger: #FF6B7A;
+        --brand-warn: #F5B942;
+        --brand-ok: #3DDC97;
+        --brand-border: rgba(61, 139, 255, 0.22);
     }
 
     .stApp {
         background: linear-gradient(165deg, #071525 0%, #0B1F3A 42%, #122B4A 100%);
-        color: var(--remote-text);
+        color: var(--brand-text);
         font-family: 'IBM Plex Sans', 'DM Sans', sans-serif;
     }
 
@@ -103,7 +103,7 @@ REMOTE_CSS = """
 
     h1, h2, h3, .stMarkdown h1, .stMarkdown h2 {
         font-family: 'DM Sans', sans-serif !important;
-        color: var(--remote-text) !important;
+        color: var(--brand-text) !important;
         letter-spacing: -0.02em;
     }
 
@@ -113,7 +113,7 @@ REMOTE_CSS = """
         font-weight: 600;
         letter-spacing: 0.12em;
         text-transform: uppercase;
-        color: var(--remote-accent-soft);
+        color: var(--brand-accent-soft);
         margin-bottom: 0.35rem;
     }
 
@@ -127,7 +127,7 @@ REMOTE_CSS = """
     }
 
     .hero-sub {
-        color: var(--remote-muted);
+        color: var(--brand-muted);
         font-size: 1.02rem;
         max-width: 42rem;
         margin-bottom: 1.25rem;
@@ -135,14 +135,14 @@ REMOTE_CSS = """
 
     .metric-card {
         background: linear-gradient(145deg, rgba(26, 58, 92, 0.85), rgba(11, 31, 58, 0.9));
-        border: 1px solid var(--remote-border);
+        border: 1px solid var(--brand-border);
         border-radius: 12px;
         padding: 1rem 1.15rem;
         margin-bottom: 0.5rem;
     }
 
     .metric-label {
-        color: var(--remote-muted);
+        color: var(--brand-muted);
         font-size: 0.78rem;
         text-transform: uppercase;
         letter-spacing: 0.06em;
@@ -157,14 +157,14 @@ REMOTE_CSS = """
     }
 
     .metric-hint {
-        color: var(--remote-muted);
+        color: var(--brand-muted);
         font-size: 0.8rem;
         margin-top: 0.2rem;
     }
 
     .risk-high {
         background: rgba(255, 107, 122, 0.12);
-        border-left: 3px solid var(--remote-danger);
+        border-left: 3px solid var(--brand-danger);
         padding: 0.75rem 1rem;
         border-radius: 0 8px 8px 0;
         margin: 0.5rem 0;
@@ -172,7 +172,7 @@ REMOTE_CSS = """
 
     .risk-medium {
         background: rgba(245, 185, 66, 0.12);
-        border-left: 3px solid var(--remote-warn);
+        border-left: 3px solid var(--brand-warn);
         padding: 0.75rem 1rem;
         border-radius: 0 8px 8px 0;
         margin: 0.5rem 0;
@@ -180,7 +180,7 @@ REMOTE_CSS = """
 
     .risk-low {
         background: rgba(61, 220, 151, 0.10);
-        border-left: 3px solid var(--remote-ok);
+        border-left: 3px solid var(--brand-ok);
         padding: 0.75rem 1rem;
         border-radius: 0 8px 8px 0;
         margin: 0.5rem 0;
@@ -193,7 +193,7 @@ REMOTE_CSS = """
     }
 
     .risk-body {
-        color: var(--remote-muted);
+        color: var(--brand-muted);
         font-size: 0.92rem;
     }
 
@@ -214,9 +214,9 @@ REMOTE_CSS = """
     .pill-info { background: rgba(61,139,255,0.2); color: #8BB8FF; }
 
     .disclaimer {
-        color: var(--remote-muted);
+        color: var(--brand-muted);
         font-size: 0.78rem;
-        border-top: 1px solid var(--remote-border);
+        border-top: 1px solid var(--brand-border);
         padding-top: 0.75rem;
         margin-top: 1.5rem;
     }
@@ -367,7 +367,7 @@ def calculate_audit(
 
 
 def render_metric_card(label: str, value: str, hint: str = "") -> None:
-    """Small HTML metric tile matching the Remote theme."""
+    """Small HTML metric tile matching the app theme."""
     hint_html = f'<div class="metric-hint">{hint}</div>' if hint else ""
     st.markdown(
         f"""
@@ -691,7 +691,7 @@ def append_audit_row(
 def render_header() -> None:
     st.markdown(
         f"""
-        <div class="hero-brand">Remote · Fintech Vertical</div>
+        <div class="hero-brand">Global Billing · Fintech Vertical</div>
         <h1 class="hero-title">{APP_TITLE}</h1>
         <p class="hero-sub">
             Simulate employer costs, flag invoice compliance gaps, and browse an audit trail —
@@ -774,7 +774,7 @@ def page_compliance_checker() -> None:
     default_de_sample = (
         "INVOICE\n"
         "From: Acme Beratungs GmbH, Berlin\n"
-        "Bill to: Remote Customer AG\n"
+        "Bill to: Northwind Customer AG\n"
         "Amount: EUR 4,200.00 for August consulting\n"
         "Please pay via bank transfer.\n"
     )
@@ -941,7 +941,7 @@ def main() -> None:
         layout="wide",
         initial_sidebar_state="expanded",
     )
-    st.markdown(REMOTE_CSS, unsafe_allow_html=True)
+    st.markdown(APP_CSS, unsafe_allow_html=True)
     init_session_state()
 
     with st.sidebar:
