@@ -34,6 +34,7 @@ rather than a production system. Everything is deterministic and runs locally wi
 - [Key Features](#key-features)
 - [Screenshots](#screenshots)
 - [How It Works](#how-it-works)
+- [Architecture](#architecture)
 - [Tech Stack](#tech-stack)
 - [Getting Started](#getting-started)
 - [Configuration](#configuration)
@@ -58,7 +59,7 @@ rather than a production system. Everything is deterministic and runs locally wi
 - **Demo FX conversion** so all totals can be normalised to USD and shown back in the user's currency.
 - **Rule engine + mock LLM narrative** — fully deterministic, so demos and tests are reproducible.
 - **Severity-ranked findings** (`high` / `medium` / `low`) that map directly to remediation priorities.
-- **Remote.com-inspired dark theme** for a polished demo experience.
+- **Polished dark theme** delivered by a self-contained CSS layer — no external design system required.
 
 ## Screenshots
 
@@ -75,6 +76,99 @@ rather than a production system. Everything is deterministic and runs locally wi
    the likely jurisdiction, checks structural fields and tax identifiers, and returns prioritised findings.
 3. **Review the trail** — Every run is appended to the in-session audit log, which can be filtered by
    country, status, risk level, and source, and exported to CSV.
+
+## Architecture
+
+The application is a **single-file Streamlit app** ([`app.py`](app.py)) organised into five labelled
+layers. Each layer is readable in isolation, and the domain logic is pure Python — which is why it can be
+unit-tested without a running Streamlit server.
+
+### Layered blocks
+
+```text
+┌────────────────────────────────────────────────────────────┐
+│ LAYER 1 · ENTRY POINT                                      │
+│ main()                                                     │
+│ st.set_page_config() · REMOTE_CSS · init_session_state()   │
+└────────────────────────────────────────────────────────────┘
+                             │
+                             ▼
+┌────────────────────────────────────────────────────────────┐
+│ LAYER 2 · UI (Streamlit tabs)                              │
+│ page_calculator() · page_compliance_checker()              │
+│ page_audit_log()                                           │
+└────────────────────────────────────────────────────────────┘
+                             │
+                             ▼
+┌────────────────────────────────────────────────────────────┐
+│ LAYER 3 · DOMAIN LOGIC                                     │
+│ calculate_audit() · to_usd() / from_usd()                  │
+│ check_invoice_compliance() · mock_llm_narrative()          │
+│ AuditBreakdown · ComplianceFinding  (dataclasses)          │
+└────────────────────────────────────────────────────────────┘
+                             │
+                             ▼
+┌────────────────────────────────────────────────────────────┐
+│ LAYER 4 · STATE                                            │
+│ seed_audit_log() · append_audit_row()                      │
+│ st.session_state['audit_log'] · ['audit_seq']              │
+└────────────────────────────────────────────────────────────┘
+                             │
+                             ▼
+┌────────────────────────────────────────────────────────────┐
+│ LAYER 5 · CONFIGURATION                                    │
+│ COUNTRY_RULES · USD_TO_EUR                                 │
+│ APP_TITLE · APP_TAGLINE · REMOTE_CSS                       │
+└────────────────────────────────────────────────────────────┘
+```
+
+### Module map
+
+| Block | `app.py` section | Key names | Responsibility |
+|---|---|---|---|
+| **Configuration** | §1 CONFIG & THEME | `APP_TITLE`, `USD_TO_EUR`, `COUNTRY_RULES`, `REMOTE_CSS` | Single source of truth for demo rates, FX, and theming. |
+| **Domain logic** | §2 Invoice Audit Calculator | `AuditBreakdown`, `to_usd`, `from_usd`, `calculate_audit` | Pure-function employer-cost model — no Streamlit imports needed to test it. |
+| **Domain logic** | §3 AI Compliance Checker | `ComplianceFinding`, `check_invoice_compliance`, `mock_llm_narrative`, `_has_*` rule helpers | Jurisdiction inference, regex rule checks, severity ranking, deterministic narrative. |
+| **State** | §4 Asynchronous Audit Log | `seed_audit_log`, `append_audit_row`, `init_session_state` | In-session DataFrame store that mimics an async audit queue. |
+| **UI** | §5 UI Pages | `render_header`, `render_metric_card`, `render_finding`, `page_*` | One render function per tab; formatting only, no business logic. |
+| **UI** | §6 Main | `main` | Page config, CSS injection, sidebar, tab wiring. |
+
+### Data flow
+
+```mermaid
+flowchart TD
+    subgraph UI["UI layer — app.py §5 / §6"]
+        M["main()"] --> T["st.tabs"]
+        T --> P1["page_calculator()"]
+        T --> P2["page_compliance_checker()"]
+        T --> P3["page_audit_log()"]
+    end
+
+    subgraph DOMAIN["Domain layer — app.py §2 / §3"]
+        F["calculate_audit()"]
+        K["check_invoice_compliance()"]
+        N["mock_llm_narrative()"]
+    end
+
+    subgraph STATE["State layer — app.py §4"]
+        L[("session_state.audit_log")]
+    end
+
+    CFG["Configuration — app.py §1<br/>COUNTRY_RULES · USD_TO_EUR"]
+
+    P1 --> F
+    P2 --> K
+    K --> N
+    F --> CFG
+    K --> CFG
+    P1 --> L
+    P2 --> L
+    P3 --> L
+```
+
+Every audit — whether it comes from the calculator or the compliance checker — is normalised into one
+row (`audit_id`, `country`, `amount`, `status`, `risk_level`, `source`) before it is written to the state
+layer, so the audit log stays the single reporting surface.
 
 ## Tech Stack
 
