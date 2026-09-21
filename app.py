@@ -19,7 +19,7 @@ from __future__ import annotations
 import hashlib
 import re
 from dataclasses import asdict, dataclass
-from datetime import date, datetime, timedelta
+from datetime import date, datetime, timedelta, timezone
 from typing import Literal
 
 import pandas as pd
@@ -669,7 +669,7 @@ def append_audit_row(
         [
             {
                 "audit_id": audit_id,
-                "created_at": pd.Timestamp(datetime.utcnow().date()),
+                "created_at": pd.Timestamp(datetime.now(timezone.utc).date()),
                 "country": country,
                 "employee_type": employee_type,
                 "amount": float(amount),
@@ -948,12 +948,15 @@ def main() -> None:
         st.markdown("### Navigation")
         st.markdown(f"*{APP_TAGLINE}*")
         st.markdown("---")
+
         st.markdown(
             """
+
             **Modules**
-            1. Invoice Audit Calculator  
-            2. AI Compliance Checker  
-            3. Asynchronous Audit Log  
+
+            - Invoice Audit Calculator
+            - AI Compliance Checker
+            - Asynchronous Audit Log
 
             Rates are **illustrative** for product demos only.
             """
