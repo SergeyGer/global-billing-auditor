@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Project documentation: `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`, and this changelog.
 - Development tooling configuration (`pyproject.toml`, `.editorconfig`, `Makefile`).
 
+### Changed
+
+- Renamed the repository to `global-billing-auditor`; all repository links and the VS Code workspace file were updated.
+
 ## [0.1.0] - 2026-09-21
 
 ### Added
@@ -23,5 +27,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Asynchronous Audit Log** with faceted filtering, KPI tiles, and CSV export.
 - Custom Streamlit dark theme and single-file application architecture.
 
-[Unreleased]: https://github.com/SergeyGer/remote-billing-audit/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/SergeyGer/remote-billing-audit/releases/tag/v0.1.0
+[Unreleased]: https://github.com/SergeyGer/global-billing-auditor/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/SergeyGer/global-billing-auditor/releases/tag/v0.1.0

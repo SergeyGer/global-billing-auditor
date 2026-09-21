@@ -3,7 +3,7 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "remote-billing-audit"
+name = "global-billing-auditor"
 version = "0.1.0"
 description = "Streamlit mini-MVP for global payroll billing, employer-cost estimation, and invoice-compliance auditing."
 readme = "README.md"
@@ -32,10 +32,10 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/SergeyGer/remote-billing-audit"
-Repository = "https://github.com/SergeyGer/remote-billing-audit"
-Issues = "https://github.com/SergeyGer/remote-billing-audit/issues"
-Changelog = "https://github.com/SergeyGer/remote-billing-audit/blob/main/CHANGELOG.md"
+Homepage = "https://github.com/SergeyGer/global-billing-auditor"
+Repository = "https://github.com/SergeyGer/global-billing-auditor"
+Issues = "https://github.com/SergeyGer/global-billing-auditor/issues"
+Changelog = "https://github.com/SergeyGer/global-billing-auditor/blob/main/CHANGELOG.md"
 
 [tool.setuptools]
 py-modules = ["app"]

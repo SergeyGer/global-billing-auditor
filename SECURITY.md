@@ -14,7 +14,7 @@ This project is a demonstration prototype. Security fixes are applied to the lat
 Please **do not** open a public issue for security vulnerabilities.
 
 Report them privately via GitHub's
-[Security Advisories](https://github.com/SergeyGer/remote-billing-audit/security/advisories/new)
+[Security Advisories](https://github.com/SergeyGer/global-billing-auditor/security/advisories/new)
 or by contacting the maintainer directly. Please include:
 
 - a description of the issue and its impact,

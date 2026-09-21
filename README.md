@@ -4,7 +4,7 @@
 
 **A Streamlit mini-MVP for global payroll billing, employer-cost estimation, and invoice-compliance auditing.**
 
-[![CI](https://github.com/SergeyGer/remote-billing-audit/actions/workflows/ci.yml/badge.svg)](https://github.com/SergeyGer/remote-billing-audit/actions/workflows/ci.yml)
+[![CI](https://github.com/SergeyGer/global-billing-auditor/actions/workflows/ci.yml/badge.svg)](https://github.com/SergeyGer/global-billing-auditor/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
 [![Streamlit](https://img.shields.io/badge/Streamlit-1.32%2B-FF4B4B.svg)](https://streamlit.io/)
@@ -188,8 +188,8 @@ layer, so the audit log stays the single reporting surface.
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/SergeyGer/remote-billing-audit.git
-cd remote-billing-audit
+git clone https://github.com/SergeyGer/global-billing-auditor.git
+cd global-billing-auditor
 
 # 2. Create and activate a virtual environment
 python -m venv .venv
@@ -226,7 +226,7 @@ To change a rate, adjust `COUNTRY_RULES` or `USD_TO_EUR` and reload the app.
 ## Project Structure
 
 ```text
-remote-billing-audit/
+global-billing-auditor/
 ├── .github/
 │   ├── ISSUE_TEMPLATE/          # Bug & feature issue forms
 │   ├── workflows/ci.yml         # Lint + test CI pipeline
