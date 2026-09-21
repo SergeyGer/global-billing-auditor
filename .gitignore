@@ -49,5 +49,8 @@ desktop.ini
 .continue/
 .continue
 
+# Local working material
+GPT Descriptions.docx
+
 # Logs
 *.log

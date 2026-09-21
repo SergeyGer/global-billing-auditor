@@ -228,17 +228,20 @@ To change a rate, adjust `COUNTRY_RULES` or `USD_TO_EUR` and reload the app.
 ```text
 global-billing-auditor/
 ├── .github/
-│   ├── ISSUE_TEMPLATE/          # Bug & feature issue forms
-│   ├── workflows/ci.yml         # Lint + test CI pipeline
+│   ├── ISSUE_TEMPLATE/            # Bug & feature issue forms
+│   ├── workflows/ci.yml           # Lint + test CI pipeline
 │   ├── PULL_REQUEST_TEMPLATE.md
-│   └── dependabot.yml           # Automated dependency updates
-├── .streamlit/config.toml       # Streamlit theme / server config
-├── tests/test_app.py            # Unit tests for the core logic
-├── app.py                       # Single-file application
-├── pyproject.toml               # Project metadata, pytest & Ruff config
-├── requirements.txt             # Runtime dependencies
-├── requirements-dev.txt         # Development dependencies
-├── Makefile                     # Common developer tasks
+│   ├── dependabot.yml             # Automated dependency updates
+├── .streamlit/config.toml         # Streamlit theme / server config
+├── tests/test_app.py              # Unit tests for the core logic
+├── app.py                         # Single-file application
+├── pyproject.toml                 # Project metadata, pytest & Ruff config
+├── requirements.txt               # Runtime dependencies
+├── requirements-dev.txt           # Development dependencies
+├── Makefile                       # Common developer tasks
+├── global-billing-auditor.code-workspace
+├── Screenshot 1 - AI Checker.jpg  # README screenshots
+├── Screenshot 2 - Audit Log.jpg   # README screenshots
 ├── README.md
 ├── CHANGELOG.md
 ├── CONTRIBUTING.md
