@@ -1,46 +1,219 @@
-# Global Billing & Invoice Compliance Auditor (Mini-MVP)
+<div align="center">
 
-A fintech-focused internal tooling prototype designed to demonstrate automated payroll calculations, multi-country tax estimation, and AI-assisted compliance auditing. 
+# 🌍 Global Billing & Invoice Compliance Auditor
 
-This project was built autonomously as part of my application for the **Billing Platform Product Manager** role at **Remote.com**. It showcases a tech-native, hands-on PM approach — validating product hypotheses and vertical workflows without consuming core engineering velocity.
+**A Streamlit mini-MVP for global payroll billing, employer-cost estimation, and invoice-compliance auditing.**
 
----
+[![CI](https://github.com/SergeyGer/remote-billing-audit/actions/workflows/ci.yml/badge.svg)](https://github.com/SergeyGer/remote-billing-audit/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-1.32%2B-FF4B4B.svg)](https://streamlit.io/)
+[![Ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-## 🚀 Key Features
-
-* **Invoice Audit Calculator:** Simulates employer costs, platform compliance fees, and country-specific tax/VAT structures dynamically based on selected country logic (US, UK, Germany) and employment type.
-* **AI Invoice Compliance Checker:** Evaluates raw invoice data or vendor text streams against rigid local compliance requirements (e.g., flagging missing W-8BEN forms for US contractors or missing VAT metadata for German entities).
-* **Asynchronous Audit Dashboard:** A simulated asynchronous, high-throughput log data table reflecting transactional metrics, status parameters, and data-driven filters.
-
----
-
-## 🛠️ Tech Stack & Methodology
-
-* **Language & Framework:** Python 3, Streamlit (for rapid user interface and functional deployment).
-* **Development Strategy:** 100% built, tested, and debugged using next-generation AI-native tools (**Cursor** and **Claude Code**). 
-* **Product Alignment:** Tailored specifically to address Fintech / Billing platform scaling challenges, emphasizing data accuracy, operational compliance, and automated services.
+</div>
 
 ---
 
-## 💻 Local Installation & Setup
+## Overview
 
-To run this application locally on your machine, follow these steps:
+The **Global Billing & Invoice Compliance Auditor** is a self-contained, reproducible
+[Streamlit](https://streamlit.io/) application that models the last mile of global payroll billing:
+estimating the employer cost of an invoice, flagging compliance gaps in raw invoice text, and keeping a
+queryable audit trail of everything that was reviewed.
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com
-   cd remote-billing-audit
-   ```
+It is designed as a **product-shaped demo** — the workflow, terminology, and risk model mirror how a
+global employment platform (EOR / contractor management / payroll) reasons about cross-border billing,
+rather than a production system. Everything is deterministic and runs locally with two dependencies.
 
-2. **Install dependencies:**
-   Make sure you have Python installed, then run:
-   ```bash
-   pip install streamlit
-   ```
+> **Simulated data notice:** FX rates, fee percentages, and VAT/social-contribution rates are
+> illustrative fixtures for demonstration. They are **not** live rates and **not** tax or legal advice.
 
-3. **Launch the Streamlit app:**
-   ```bash
-   streamlit run app.py
-   ```
-   *The application will automatically open in your default browser at `http://localhost:8501`.*
+## Table of Contents
 
+- [Key Features](#key-features)
+- [Screenshots](#screenshots)
+- [How It Works](#how-it-works)
+- [Tech Stack](#tech-stack)
+- [Getting Started](#getting-started)
+- [Configuration](#configuration)
+- [Project Structure](#project-structure)
+- [Testing](#testing)
+- [Roadmap](#roadmap)
+- [Contributing](#contributing)
+- [License](#license)
+- [Disclaimer](#disclaimer)
+
+## Key Features
+
+| # | Module | What it does |
+|---|--------|--------------|
+| 1 | **Invoice Audit Calculator** | Simulates employer cost, platform compliance fee, employer social contributions, and tax/VAT for an invoice, based on the selected country (US, UK, Germany) and worker type (Contractor / Full-time). |
+| 2 | **AI Invoice Compliance Checker** | Audits raw invoice text against jurisdiction-specific rules (e.g. missing USt-IdNr. for German B2B, missing W-8BEN/W-9 for US contractors, unclear UK VAT registration) and returns severity-ranked findings plus a deterministic mock-LLM summary. |
+| 3 | **Asynchronous Audit Log** | A filterable, exportable audit trail that records every calculation and compliance check, with KPI tiles, faceted filters, and CSV export. |
+
+### Highlights
+
+- **Multi-country cost model** for the US, UK, and Germany with worker-type-aware social contributions.
+- **Demo FX conversion** so all totals can be normalised to USD and shown back in the user's currency.
+- **Rule engine + mock LLM narrative** — fully deterministic, so demos and tests are reproducible.
+- **Severity-ranked findings** (`high` / `medium` / `low`) that map directly to remediation priorities.
+- **Remote.com-inspired dark theme** for a polished demo experience.
+
+## Screenshots
+
+| AI Invoice Compliance Checker | Asynchronous Audit Log |
+|---|---|
+| ![AI Invoice Compliance Checker](<Screenshot 1 - AI Checker.jpg>) | ![Asynchronous Audit Log](<Screenshot 2 - Audit Log.jpg>) |
+
+## How It Works
+
+1. **Estimate cost** — Choose a country, worker type, currency, and invoice amount. The calculator
+   converts to USD, applies the country's compliance-fee rate and (for full-time workers) the employer
+   social-contribution rate, and returns an all-in employer cost plus an effective load percentage.
+2. **Audit invoice text** — Paste raw invoice text (OCR output or an email body). The rule engine infers
+   the likely jurisdiction, checks structural fields and tax identifiers, and returns prioritised findings.
+3. **Review the trail** — Every run is appended to the in-session audit log, which can be filtered by
+   country, status, risk level, and source, and exported to CSV.
+
+## Tech Stack
+
+- **Language:** Python 3.10+
+- **UI / runtime:** [Streamlit](https://streamlit.io/)
+- **Data:** [pandas](https://pandas.pydata.org/)
+- **Quality:** [pytest](https://docs.pytest.org/) · [Ruff](https://github.com/astral-sh/ruff) · GitHub Actions
+
+## Getting Started
+
+### Prerequisites
+
+- Python **3.10+**
+- `pip` (or any virtual-environment manager)
+
+### Installation
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/SergeyGer/remote-billing-audit.git
+cd remote-billing-audit
+
+# 2. Create and activate a virtual environment
+python -m venv .venv
+
+#   Windows (PowerShell)
+.venv\Scripts\Activate.ps1
+#   macOS / Linux
+source .venv/bin/activate
+
+# 3. Install dependencies
+pip install -r requirements.txt
+```
+
+### Run
+
+```bash
+streamlit run app.py
+```
+
+The app opens automatically at <http://localhost:8501>.
+
+## Configuration
+
+All tunable demo parameters live at the top of [`app.py`](app.py):
+
+| Setting | Location | Description |
+|---|---|---|
+| Demo FX rate | `USD_TO_EUR` | Static USD → EUR conversion used to normalise totals. |
+| Country rules | `COUNTRY_RULES` | Per-country compliance-fee, VAT, and employer social rates plus compliance notes. |
+| Theme | `.streamlit/config.toml` | Streamlit theme overrides that complement the in-app CSS. |
+
+To change a rate, adjust `COUNTRY_RULES` or `USD_TO_EUR` and reload the app.
+
+## Project Structure
+
+```text
+remote-billing-audit/
+├── .github/
+│   ├── ISSUE_TEMPLATE/          # Bug & feature issue forms
+│   ├── workflows/ci.yml         # Lint + test CI pipeline
+│   ├── PULL_REQUEST_TEMPLATE.md
+│   └── dependabot.yml           # Automated dependency updates
+├── .streamlit/config.toml       # Streamlit theme / server config
+├── tests/test_app.py            # Unit tests for the core logic
+├── app.py                       # Single-file application
+├── pyproject.toml               # Project metadata, pytest & Ruff config
+├── requirements.txt             # Runtime dependencies
+├── requirements-dev.txt         # Development dependencies
+├── Makefile                     # Common developer tasks
+├── README.md
+├── CHANGELOG.md
+├── CONTRIBUTING.md
+├── CODE_OF_CONDUCT.md
+├── SECURITY.md
+├── LICENSE
+├── .editorconfig
+└── .gitignore
+```
+
+## Testing
+
+The core logic is covered by unit tests that do not require a running Streamlit server.
+
+```bash
+pip install -r requirements-dev.txt
+pytest          # run the test suite
+ruff check .    # run the linter
+```
+
+Or, where `make` is available:
+
+```bash
+make test
+make lint
+```
+
+## Roadmap
+
+This project ships as a complete mini-MVP. The following is the intended direction of travel;
+priorities are indicative and may shift.
+
+### Next
+
+- [ ] Replace the mock LLM narrative with a real provider integration (OpenAI / Anthropic) behind a feature flag.
+- [ ] Source FX rates from a live provider with caching and graceful fallback.
+- [ ] Add input validation and structured error handling to the invoice parser.
+- [ ] Enforce a test-coverage threshold in CI.
+
+### Later
+
+- [ ] Persist the audit log in a real datastore (PostgreSQL) with migrations.
+- [ ] Move audit execution to an asynchronous worker queue (Celery / RQ + Redis).
+- [ ] Add authentication and role-based access (Reviewer / Approver / Admin).
+- [ ] Generate downloadable PDF audit reports.
+
+### Exploring
+
+- [ ] Extend the rule engine to additional jurisdictions and configurable tax profiles.
+- [ ] Expose a REST API and outbound webhooks for downstream billing systems.
+- [ ] Multi-tenant workspaces with per-tenant policy configuration.
+- [ ] Observability: structured logging, metrics, and audit-trail integrity checks.
+
+## Contributing
+
+Contributions, issues, and feature requests are welcome. Please read
+[CONTRIBUTING.md](CONTRIBUTING.md) and our [Code of Conduct](CODE_OF_CONDUCT.md) before opening a
+pull request. For security issues, see [SECURITY.md](SECURITY.md).
+
+## License
+
+Released under the [MIT License](LICENSE).
+
+## Disclaimer
+
+This project is a demonstration prototype. The fees, tax, VAT, and compliance rules it models are
+**simplified and illustrative** and do **not** constitute tax, legal, or accounting advice. Do not use
+it to make real billing or compliance decisions without validation by qualified professionals.
+
+---
+
+<div align="center"><sub>Built with Streamlit · Simulated data only · Not tax or legal advice</sub></div>
